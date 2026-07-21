@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Celtigar Gateway — WebSocket Test Client</title>
+<style>
+  body { font-family: -apple-system, sans-serif; max-width: 640px; margin: 40px auto; padding: 0 16px; }
+  #log { border: 1px solid #ccc; border-radius: 8px; padding: 12px; height: 240px; overflow-y: auto; white-space: pre-wrap; background: #fafafa; }
+  input { width: 70%; padding: 8px; }
+  button { padding: 8px 16px; }
+  .status { font-size: 12px; color: #666; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+  <h2>Celtigar Gateway — WebSocket Test Client</h2>
+  <div class="status" id="status">connecting...</div>
+  <div id="log"></div>
+  <p>
+    <input id="msg" type="text" placeholder="Type a message..." />
+    <button id="send">Send</button>
+  </p>
+
+  <script>
+    const logEl = document.getElementById("log");
+    const statusEl = document.getElementById("status");
+    const input = document.getElementById("msg");
+
+    function appendLog(text) {
+      logEl.textContent += text;
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    const ws = new WebSocket("ws://" + location.host + "/ws");
+
+    ws.onopen = () => { statusEl.textContent = "connected"; };
+    ws.onclose = () => { statusEl.textContent = "connection closed"; };
+    ws.onerror = (e) => { statusEl.textContent = "error"; console.error(e); };
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.type === "token") {
+        appendLog(data.delta);
+      } else if (data.type === "done") {
+        appendLog("\n\n");
+      } else if (data.type === "error") {
+        appendLog("\n[error] " + data.delta + "\n\n");
+      }
+    };
+
+    function send() {
+      const text = input.value.trim();
+      if (!text) return;
+      appendLog("> " + text + "\n");
+      ws.send(JSON.stringify({ message: text }));
+      input.value = "";
+    }
+
+    document.getElementById("send").addEventListener("click", send);
+    input.addEventListener("keydown", (e) => { if (e.key === "Enter") send(); });
+  </script>
+</body>
+</html>

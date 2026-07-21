@@ -1,0 +1,18 @@
+# Go
+*.exe
+*.test
+*.out
+vendor/
+
+# Java
+target/
+*.class
+.gradle/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
