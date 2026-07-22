@@ -8,7 +8,7 @@ See `docs/architecture.md` for the full design and phased roadmap.
 
 - [x] Phase 0/1 — Gateway (Go), first service with WebSocket streaming
 - [ ] LLM Router
-- [ ] RAG Service (Java)
+- [~] RAG Service (Java) — skeleton (health check, builds & runs on :8081)
 - [ ] Agent Orchestrator
 - [ ] Component Registry (Java)
 
@@ -19,7 +19,7 @@ celtigar/
   gateway/            # Go — WebSocket entrypoint (first service, working)
   llm-router/          # Go — multi-provider LLM abstraction (not yet)
   agent-orchestrator/  # Go — workflow engine (not yet)
-  rag-service/         # Java/Spring Boot — ingestion + embedding + retrieval (not yet)
+  rag-service/         # Java/Spring Boot — ingestion + embedding + retrieval (skeleton)
   component-registry/  # Java/Spring Boot — component catalog service (not yet)
   proto/               # shared .proto definitions (not yet)
   docs/                # architecture notes

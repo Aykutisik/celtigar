@@ -3,11 +3,13 @@
 *.test
 *.out
 vendor/
+bin/
 
-# Java
+# Java / Gradle
 target/
 *.class
 .gradle/
+build/
 
 # IDE
 .idea/
