@@ -1,6 +1,8 @@
 # RAG Service
 
-Celtigar's knowledge-base service (Java 21 / Spring Boot, Gradle). **Skeleton stage** — today it only exposes a health check to prove the service builds and runs inside the monorepo. The full pipeline (ingestion, chunking, embedding, vector storage, retrieval) arrives in Phase 2.
+Celtigar's knowledge-base service (Java 21 / Spring Boot, Gradle).
+
+**Phase 1 — RAG API (working).** A full ingest → chunk → embed → store → retrieve flow runs end to end, but on stand-in parts: a fake embedding model and an in-memory vector store, both behind interfaces. So the API works with no API key and no database. Phase 2 swaps the fakes for a real embedding model + pgvector, adds file upload (Tika), and makes ingestion async/batched for large files.
 
 ## Running
 
@@ -9,12 +11,34 @@ cd rag-service
 make run          # or: ./gradlew bootRun
 ```
 
-The service listens on **:8081** (the Gateway owns :8080). Verify it:
+The service listens on **:8081** (the Gateway owns :8080).
 
 ```bash
+# health
 curl http://localhost:8081/healthz
 # {"status":"ok","service":"rag-service"}
+
+# ingest a document (raw text for now; file upload via Tika comes later)
+curl -X POST http://localhost:8081/documents \
+  -H "Content-Type: application/json" \
+  -d '{"name":"handbook","text":"Employees get 20 days of annual leave..."}'
+# {"documentId":"...","name":"handbook","chunks":1}
+
+# retrieve the most similar chunks
+curl "http://localhost:8081/search?q=how%20many%20leave%20days&k=3"
 ```
+
+## Endpoints
+
+| Method | Path | Purpose |
+|--------|------|---------|
+| `GET`  | `/healthz` | Liveness probe |
+| `POST` | `/documents` | Ingest text: chunk → embed → store |
+| `GET`  | `/search?q=&k=` | Embed the query, return top-k similar chunks |
+
+The pipeline runs behind interfaces (`Chunker`, `EmbeddingModel`, `VectorStore`) with
+in-memory/fake implementations, so it works with no API key or database. Ingestion is
+synchronous today — async/batched processing for large files is the next step.
 
 ## Make targets
 

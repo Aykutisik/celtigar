@@ -8,7 +8,7 @@ See `docs/architecture.md` for the full design and phased roadmap.
 
 - [x] Phase 0/1 — Gateway (Go), first service with WebSocket streaming
 - [ ] LLM Router
-- [~] RAG Service (Java) — skeleton (health check, builds & runs on :8081)
+- [~] RAG Service (Java) — Phase 1 RAG API: in-memory ingest + search (`/documents`, `/search`) on :8081
 - [ ] Agent Orchestrator
 - [ ] Component Registry (Java)
 

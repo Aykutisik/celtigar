@@ -6,9 +6,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * Entry point for the Celtigar RAG Service.
  *
- * <p>Skeleton only: today it exposes a health check. Later phases add document
- * ingestion, chunking, embedding generation, vector storage (pgvector/Qdrant),
- * and a gRPC retrieval endpoint the Gateway/Orchestrator can call.
+ * <p>Early-phase plumbing: ingest text, chunk it, embed each chunk, store the
+ * vectors, and retrieve the most similar chunks for a query. The embedding model
+ * and vector store are fakes (in-memory) behind interfaces, so the whole flow
+ * runs with no API key or database. Phase 2 swaps in a real embedding API and
+ * pgvector, and makes ingestion async/batched for large files.
  */
 @SpringBootApplication
 public class RagServiceApplication {
