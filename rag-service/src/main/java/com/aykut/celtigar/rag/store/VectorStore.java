@@ -13,4 +13,7 @@ public interface VectorStore {
 
     /** Return the {@code topK} stored chunks most similar to {@code query}, best first. */
     List<SearchHit> search(float[] query, int topK);
+
+    /** Total number of chunks currently stored. */
+    int size();
 }

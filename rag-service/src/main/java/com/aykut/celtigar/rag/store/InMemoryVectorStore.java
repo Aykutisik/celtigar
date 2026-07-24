@@ -35,6 +35,11 @@ public class InMemoryVectorStore implements VectorStore {
         return hits.subList(0, Math.min(topK, hits.size()));
     }
 
+    @Override
+    public int size() {
+        return entries.size();
+    }
+
     /** Cosine similarity. Vectors are already unit-length, so this is just a dot product. */
     private double cosine(float[] a, float[] b) {
         double dot = 0.0;

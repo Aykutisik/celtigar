@@ -35,6 +35,7 @@ curl "http://localhost:8081/search?q=how%20many%20leave%20days&k=3"
 | `GET`  | `/healthz` | Liveness probe |
 | `POST` | `/documents` | Ingest text: chunk → embed → store |
 | `GET`  | `/search?q=&k=` | Embed the query, return top-k similar chunks |
+| `GET`  | `/stats` | How many chunks are currently stored |
 
 The pipeline runs behind interfaces (`Chunker`, `EmbeddingModel`, `VectorStore`) with
 in-memory/fake implementations, so it works with no API key or database. Ingestion is
